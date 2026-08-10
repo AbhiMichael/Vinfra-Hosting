@@ -64,7 +64,7 @@ export default function WhatsAppChat() {
 
           <div className="whatsapp-chat-footer">
             <a
-              href="https://wa.me/919074013254"
+              href="https://wa.me/919072135550"
               target="_blank"
               rel="noopener noreferrer"
               className="whatsapp-open-chat-btn"
