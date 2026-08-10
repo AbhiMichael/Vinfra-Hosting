@@ -46,7 +46,7 @@ export default function Contact() {
         setStatus({ loading: false, success: true, error: null });
         // Clear form on success
         setForm({ name: "", email: "", message: "" });
-        
+
         // Hide success message after 5 seconds
         setTimeout(() => {
           setStatus((prev) => ({ ...prev, success: false }));
@@ -389,7 +389,7 @@ export default function Contact() {
                 <div className="detail-icon">✉️</div>
                 <div className="detail-content">
                   <h4>Email</h4>
-                  <p>info@vinfaprojects.com</p>
+                  <p>info@vinfraprojects.com</p>
                 </div>
               </div>
               <div className="detail-item">
@@ -415,7 +415,7 @@ export default function Contact() {
             {/* Right side – form */}
             <div className="contact-form">
               <h3 className="form-title">Send a message</h3>
-              
+
               {/* Added Feedback Messages */}
               {status.success && (
                 <div className="form-message success">
@@ -431,7 +431,7 @@ export default function Contact() {
               <form onSubmit={handleSubmit}>
                 {/* Honeypot field to prevent spam */}
                 <input type="checkbox" name="botcheck" style={{ display: "none" }} />
-                
+
                 <div className="form-group">
                   <input
                     type="text"
@@ -461,8 +461,8 @@ export default function Contact() {
                     required
                   ></textarea>
                 </div>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="submit-btn"
                   disabled={status.loading}
                 >
@@ -481,7 +481,7 @@ export default function Contact() {
             </div>
           </div>
         </div>
-      </div>  
+      </div>
     </div>
   );
 }
