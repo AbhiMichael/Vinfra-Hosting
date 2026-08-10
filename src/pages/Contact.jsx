@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { FaPhone } from "react-icons/fa6";
+import { MdEmail } from "react-icons/md";
+import { IoLocationSharp } from "react-icons/io5";
+import { HiBuildingOffice } from "react-icons/hi2";
 
 export default function Contact() {
   // 1. Setup form state
@@ -379,28 +383,28 @@ export default function Contact() {
                 </h3>
               </div>
               <div className="detail-item">
-                <div className="detail-icon">📞</div>
+                <div className="detail-icon"><FaPhone /></div>
                 <div className="detail-content">
                   <h4>Phone</h4>
-                  <p>+91 96568 13254</p>
+                  <p>+91 90721 35550</p>
                 </div>
               </div>
               <div className="detail-item">
-                <div className="detail-icon">✉️</div>
+                <div className="detail-icon"><MdEmail /></div>
                 <div className="detail-content">
                   <h4>Email</h4>
                   <p>info@vinfraprojects.com</p>
                 </div>
               </div>
               <div className="detail-item">
-                <div className="detail-icon">📍</div>
+                <div className="detail-icon"><IoLocationSharp /></div>
                 <div className="detail-content">
                   <h4>Address</h4>
                   <p>Mannamkund, Karuvancal, Kannur, Kerala — 670571</p>
                 </div>
               </div>
               <div className="detail-item">
-                <div className="detail-icon">🏢</div>
+                <div className="detail-icon"><HiBuildingOffice /></div>
                 <div className="detail-content">
                   <h4>Branch Office</h4>
                   <div className="branch-list">
@@ -475,7 +479,7 @@ export default function Contact() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  🔗 LinkedIn / Vinfra Projects
+                  {/*  LinkedIn / Vinfra Projects */}
                 </a>
               </div>
             </div>

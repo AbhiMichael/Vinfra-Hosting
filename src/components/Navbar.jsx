@@ -23,12 +23,12 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
+
       // Hide navbar when scrolling down, show when scrolling up
       if (currentScrollY > lastScrollY && currentScrollY > 50) {
         setIsScrolledDown(true);
         // Automatically close mobile menu when scrolling down
-        setIsMenuOpen(false); 
+        setIsMenuOpen(false);
       } else {
         setIsScrolledDown(false);
       }
@@ -49,7 +49,7 @@ export default function Navbar() {
         />
       </Link>
 
-      <button 
+      <button
         className={`nav-toggle ${isMenuOpen ? "open" : ""}`}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-label="Toggle navigation"

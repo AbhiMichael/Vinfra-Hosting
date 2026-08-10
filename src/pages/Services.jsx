@@ -768,14 +768,14 @@ export default function Services() {
           stroke-width: 1.5;
           fill: none;
         }
-        .service-detail-name {
+        .service-detail-card .service-detail-name {
           font-family: var(--font-display);
           font-size: 22px;
           font-weight: 700;
           color: var(--white);
           margin-bottom: 12px;
         }
-        .service-detail-description { font-size: 14px; line-height: 1.6; color: var(--steel-light); }
+        .service-detail-card .service-detail-description { font-size: 14px; line-height: 1.6; color: var(--steel-light); }
 
         /* Stats Section */
         .stats-section {

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import Link from "next/link";
 
 // Import images
 import ProjectOne from "../assets/img1.webp";
@@ -906,10 +907,12 @@ export default function About() {
               satisfaction, making us a trusted name in the roofing industry.
             </p>
             <div className="about-hero-buttons">
-              <button className="mission-cta">Our Works →</button>
-              <button className="bracket-btn">
-                Learn More <span className="arrow">→</span>
-              </button>
+              <Link href="/projects">
+                <button className="mission-cta">Our Works →</button>
+              </Link>
+              {/* <button className="bracket-btn">
+                <span className="arrow">→</span>
+              </button> */}
             </div>
           </div>
           <div className="about-hero-image">
@@ -948,7 +951,7 @@ export default function About() {
                 or sports facilities, we bring innovation, speed, and quality to
                 every project.
               </p>
-              <button className="mission-cta">Learn More →</button>
+              {/* <button className="mission-cta">Learn More →</button> */}
             </div>
             <div className="mission-grid-images">
               <div className="mission-grid-img img-1">
@@ -996,9 +999,9 @@ export default function About() {
               <h3>"Vinfra Honored for Excellence in Roofing Innovation"</h3>
               <div className="news-meta">
                 <span className="news-date">2025</span>
-                <button className="bracket-btn">
-                  <span className="arrow">→</span>
-                </button>
+                {/* <button className="bracket-btn">
+                  <span className="arrow"></span>
+                </button> */}
               </div>
             </div>
             <div className="news-card image-card">
@@ -1024,7 +1027,9 @@ export default function About() {
               by combining cutting-edge technology with sustainable practices,
               delivering long-term value to our clients.
             </p>
-            <button className="mission-cta">Contact Us →</button>
+            <Link href="/contact">
+              <button className="mission-cta">Contact Us →</button>
+            </Link>
           </div>
         </section>
 
@@ -1062,6 +1067,12 @@ export default function About() {
                 <IconInstitution />
               </div>
               <h4>Institutional Roofing</h4>
+            </div>
+            <div className="expertise-card">
+              <div className="expertise-icon">
+                <IconInstitution />
+              </div>
+              <h4>Agricultural & Farm Roofing</h4>
             </div>
             <div className="expertise-card">
               <div className="expertise-icon">
@@ -1122,147 +1133,6 @@ export default function About() {
                 We help you choose the right roofing solution with clear,
                 informed recommendations and planning support.
               </p>
-            </div>
-          </div>
-        </section>
-
-        {/* News & Story Tiles – emoji replaced with SVG */}
-        <section className="about-news-tiles reveal-group">
-          <div className="news-tiles-header">
-            <div className="section-label">News & Story</div>
-            <h2 className="section-title">
-              <span>VINFRA</span>
-            </h2>
-            <p className="news-tiles-subtitle">
-              Tracking the structural shifts, material breakthroughs, and
-              sustainable engineering initiatives across international
-              infrastructure lines.
-            </p>
-            <button className="bracket-btn">
-              Open Pressroom <span className="arrow">→</span>
-            </button>
-          </div>
-
-          <div className="tiles-grid">
-            {/* Large Tile - unchanged */}
-            <div className="tile tile-large">
-              <div className="tile-content">
-                <div className="tile-badge">REPORTS</div>
-                <h3 className="tile-title">
-                  Sustainability Report on the Steel Industry Highlights Gaps
-                  and Strengths
-                </h3>
-                <div className="tile-footer">
-                  <span className="tile-date">2026-10-10</span>
-                  <button className="tile-link">↳</button>
-                </div>
-              </div>
-              <div className="tile-overlay"></div>
-            </div>
-
-            {/* Medium Orange Tile - unchanged */}
-            <div className="tile tile-medium">
-              <div className="tile-content">
-                <div className="tile-badge orange">ARCHING EXCELLENCE</div>
-                <h3 className="tile-title">
-                  CURVED TO PERFORM. BUILT TO LAST.
-                </h3>
-                <div className="tile-footer">
-                  <button className="tile-link">Learn More →</button>
-                </div>
-              </div>
-            </div>
-
-            {/* Small Quote Tile - unchanged */}
-            <div className="tile tile-small">
-              <div className="tile-content">
-                <div className="quote-mark">"</div>
-                <p className="tile-quote">
-                  Designing Curves. Delivering Strength.
-                </p>
-                <div className="tile-footer">
-                  <span className="tile-author">- Vinfra Engineering</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Medium-alt Tile - unchanged */}
-            <div className="tile tile-medium-alt">
-              <div className="tile-content">
-                <div className="tile-badge">INNOVATION</div>
-                <h3 className="tile-title">
-                  SMARTER ROOFING. STRONGER FUTURES.
-                </h3>
-                <p className="tile-description">
-                  Advanced curvature enclosures that redefine structural
-                  possibilities while maintaining exceptional durability and
-                  cost efficiency.
-                </p>
-                <button className="tile-link-btn">Explore Technology →</button>
-              </div>
-            </div>
-
-            {/* Stat Tile - unchanged */}
-            <div className="tile tile-stat">
-              <div className="stat-number-large">250+</div>
-              <div className="stat-label-large">Projects Completed</div>
-              <div className="stat-trend">↑ 45% this year</div>
-            </div>
-
-            {/* Achievement Tile – replaced 🏆 with SVG */}
-            <div className="tile tile-achievement">
-              <div className="achievement-icon">
-                <IconTrophy />
-              </div>
-              <h4>Best Industrial Innovation</h4>
-              <p>Steel Excellence Awards 2025</p>
-            </div>
-
-            {/* Wide Tile - unchanged */}
-            <div className="tile tile-wide">
-              <div className="tile-content">
-                <div className="tile-badge">MATERIAL BREAKTHROUGH</div>
-                <h3 className="tile-title">
-                  New generation high-tensile steel coating
-                </h3>
-                <p className="tile-description">
-                  Our proprietary coating technology extends roof life by 3x in
-                  industrial environments, reducing maintenance costs by up to
-                  60%.
-                </p>
-                <div className="tech-tags">
-                  <span>Corrosion Resistant</span>
-                  <span>Heat Reflective</span>
-                  <span>Eco-Friendly</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Metric Tile - unchanged */}
-            <div className="tile tile-metric">
-              <div className="metric-circle">
-                <span className="metric-value">10+</span>
-                <span className="metric-unit">Years</span>
-              </div>
-              <p>Of Industry Leadership</p>
-            </div>
-
-            {/* Global Tile – replaced 🌍 with SVG */}
-            <div className="tile tile-global">
-              <div className="global-icon">
-                <IconGlobe />
-              </div>
-              <div className="tile-content">
-                <h3>Global Footprint</h3>
-                <p>
-                  Delivering excellence across 100+ cities with 500+ successful
-                  installations
-                </p>
-                <div className="global-stats">
-                  <span>📍 100+ Cities</span>
-                  <span>🏗️ 500+ Projects</span>
-                </div>
-              </div>
             </div>
           </div>
         </section>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import Link from "next/link";
 
 export default function Projects() {
   const [filter, setFilter] = useState("all");
@@ -926,7 +927,9 @@ export default function Projects() {
               Let's discuss your roofing needs and create something
               extraordinary together.
             </p>
-            <button className="cta-button">Get in Touch →</button>
+            <Link href="/contact">
+              <button className="cta-button">Get in Touch →</button>
+            </Link>
           </div>
         </section>
 
