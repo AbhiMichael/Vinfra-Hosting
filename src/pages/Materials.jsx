@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 // Import your image for the left side
-import steelImage from "../assets/img1.webp";
+import steelImage from "../assets/material.png";
 
 export default function Materials() {
   useEffect(() => {
