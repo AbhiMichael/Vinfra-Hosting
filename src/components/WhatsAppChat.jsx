@@ -52,7 +52,7 @@ export default function WhatsAppChat() {
               ✕
             </button>
           </div>
-          
+
           <div className="whatsapp-chat-body">
             <div className="whatsapp-message">
               Hi 👋, welcome to <strong>Vinfra Trussless Roofings</strong> - Innovative & Durable Roofing Solutions
@@ -64,7 +64,7 @@ export default function WhatsAppChat() {
 
           <div className="whatsapp-chat-footer">
             <a
-              href="https://wa.me/917618739515"
+              href="https://wa.me/919074013254"
               target="_blank"
               rel="noopener noreferrer"
               className="whatsapp-open-chat-btn"
@@ -81,8 +81,8 @@ export default function WhatsAppChat() {
                 strokeLinejoin="round"
                 style={{ marginRight: '8px' }}
               >
-                 <line x1="22" y1="2" x2="11" y2="13"></line>
-                 <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
               </svg>
               Open Chat
             </a>
@@ -94,9 +94,9 @@ export default function WhatsAppChat() {
           aria-label="Chat with us on WhatsApp"
           onClick={toggleChat}
         >
-          <img 
-            src="/wp.webp" 
-            alt="WhatsApp" 
+          <img
+            src="/wp.webp"
+            alt="WhatsApp"
             style={{ width: '60px', height: '60px', objectFit: 'contain' }}
           />
         </button>
