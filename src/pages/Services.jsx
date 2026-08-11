@@ -838,14 +838,35 @@ export default function Services() {
           .process-section,
           .services-detail-section,
           .stats-section {
-            padding: 40px 24px;
+            padding: 40px 16px;
           }
           .benefits-grid,
           .services-detail-grid,
-          .stats-grid {
-            grid-template-columns: 1fr;
+          .stats-grid,
+          .process-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
           }
-          .certified-card { padding: 32px; }
+          .benefit-card, .process-card, .service-detail-card, .stat-card {
+            padding: 16px 12px;
+          }
+          .benefit-icon svg, .process-icon svg, .service-detail-icon svg {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 12px;
+          }
+          .benefit-name, .process-name, .service-detail-card .service-detail-name {
+            font-size: 14px;
+            margin-bottom: 8px;
+            line-height: 1.3;
+          }
+          .benefit-description, .process-description, .service-detail-card .service-detail-description {
+            font-size: 11px;
+            line-height: 1.4;
+          }
+          .stat-number { font-size: 28px; margin-bottom: 4px; }
+          .stat-label { font-size: 10px; }
+          .certified-card { padding: 24px; }
           .section-title { font-size: 28px; }
         }
       `}</style>

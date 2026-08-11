@@ -249,15 +249,15 @@ const GLOBAL_STYLES = `
         .app-header h2 { font-family: var(--font-display); font-size: 48px; font-weight: 400; letter-spacing: -0.02em; }
         .app-header h2 span { color: var(--steel-light); font-weight: 300; }
         
-        .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; position: relative; z-index: 5; }
+        .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; position: relative; z-index: 5; }
         .app-card { background: rgba(233,238,242,0.02); border: 1px solid var(--panel-border); border-radius: 8px; overflow: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .app-card:hover { border-color: var(--white); transform: translateY(-4px); background: rgba(233,238,242,0.04); }
         .app-img-wrapper { height: 260px; overflow: hidden; position: relative; background: #161d22; }
         .app-img-wrapper img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: transform 0.6s ease; }
         .app-card:hover .app-img-wrapper img { transform: scale(1.04); opacity: 1; }
-        .app-card-content { padding: 32px; }
+        .app-card-content { padding: 24px 20px; text-align: center; }
         .app-card-tag { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); margin-bottom: 12px; }
-        .app-card h4 { font-family: var(--font-display); font-size: 22px; font-weight: 500; margin-bottom: 12px; }
+        .app-card h4 { font-family: var(--font-display); font-size: 20px; font-weight: 500; margin-bottom: 0; }
         .app-card p { font-size: 14px; color: var(--steel-light); line-height: 1.6; }
 
         .page-services {
@@ -882,16 +882,22 @@ const GLOBAL_STYLES = `
           .evo-card.image-box { height: 240px; }
           .page-stories { display: flex; flex-direction: column; }
           .story-hero-pane { padding: 60px 20px; }
+          .story-split-pane { display: flex; flex-direction: column; }
           .report-block { padding: 40px 20px; }
           .story-image-block { height: 240px; }
           .page-applications { padding: 80px 20px; }
           .app-header { flex-direction: column; align-items: flex-start; gap: 16px; }
           .app-header h2 { font-size: 32px; }
-          .app-grid { grid-template-columns: 1fr; }
-          .app-img-wrapper { height: 200px; }
-          .page-services { padding: 80px 20px; }
-          .services-grid { grid-template-columns: 1fr 1fr; }
-          .service-cell { padding: 32px 16px; }
+          .app-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+          .app-img-wrapper { height: 120px; }
+          .app-card-content { padding: 16px 12px; }
+          .app-card h4 { font-size: 15px; margin-bottom: 0; text-align: center; line-height: 1.3; }
+          .page-services { padding: 40px 12px; }
+          .services-grid { grid-template-columns: repeat(3, 1fr); }
+          .service-cell { padding: 20px 4px; gap: 8px; justify-content: center; }
+          .service-icon-ring { width: 40px; height: 40px; }
+          .service-icon-ring svg { width: 20px; height: 20px; }
+          .service-name { font-size: 11px; line-height: 1.3; }
           .page-mission { grid-template-columns: 1fr; padding: 80px 20px; gap: 40px; min-height: auto; }
           .mission-right { height: 360px; }
           .page-benefits { padding: 80px 20px; }
@@ -901,17 +907,20 @@ const GLOBAL_STYLES = `
           .page-industries { padding: 80px 20px 40px 20px; }
           .industries-grid { grid-template-columns: 1fr 1fr; }
           .industry-cell { padding: 24px 16px; font-size: 15px; }
-          .metrics-strip { padding: 40px 20px; grid-template-columns: repeat(2, 1fr); }
-          .metric-block { padding: 24px 12px; border-right: none; border-bottom: 1px solid rgba(233,238,242,0.15); }
+          .metrics-strip { padding: 32px 12px; grid-template-columns: repeat(2, 1fr); gap: 0; }
+          .metric-block { padding: 24px 8px; border: none; }
+          .metric-block:nth-child(odd) { border-right: 1px solid rgba(233,238,242,0.15); }
+          .metric-block:nth-child(1), .metric-block:nth-child(2) { border-bottom: 1px solid rgba(233,238,242,0.15); }
+          .metric-number { font-size: 36px !important; margin-bottom: 8px; }
+          .metric-label { font-size: 10px; line-height: 1.3; }
           .page-contact { padding: 60px 20px 40px 20px; }
           .contact-grid { grid-template-columns: 1fr; gap: 40px; margin-bottom: 40px; }
           .contact-footer-bar { flex-direction: column; gap: 12px; text-align: center; }
         }
         @media (max-width: 480px) {
           .nav-link { padding: 6px 10px; font-size: 11px; }
-          .services-grid { grid-template-columns: 1fr; }
+          .services-grid { grid-template-columns: repeat(3, 1fr); }
           .industries-grid { grid-template-columns: 1fr; }
-          .metrics-strip { grid-template-columns: 1fr; }
           .mission-right { height: 280px; }
         }
       `;
@@ -1275,45 +1284,38 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="app-grid">
-          <div className="app-card">
+          <Link href="/projects" className="app-card" style={{ textDecoration: "none", color: "inherit" }}>
             <div className="app-img-wrapper">
               <img src={ProjectOne.src} alt="Multi Purpose Hall project" />
             </div>
             <div className="app-card-content">
-              <div className="app-card-tag">Commercial</div>
               <h4>Multi Purpose Hall</h4>
-              <p>
-                State-of-the-art facility with clear span roofing and integrated
-                engineering for superior load distribution and interior volume.
-              </p>
             </div>
-          </div>
-          <div className="app-card">
+          </Link>
+          <Link href="/projects" className="app-card" style={{ textDecoration: "none", color: "inherit" }}>
             <div className="app-img-wrapper">
               <img src={ProjectTwo.src} alt="Convention Centre project" />
             </div>
             <div className="app-card-content">
-              <div className="app-card-tag">Commercial</div>
               <h4>Convention Centre</h4>
-              <p>
-                Curved architectural roofing for premium event spaces with
-                high-performance thermal control and modern aesthetics.
-              </p>
             </div>
-          </div>
-          <div className="app-card">
+          </Link>
+          <Link href="/projects" className="app-card" style={{ textDecoration: "none", color: "inherit" }}>
             <div className="app-img-wrapper">
               <img src={ProjectThree.src} alt="Warehouse Roofing project" />
             </div>
             <div className="app-card-content">
-              <div className="app-card-tag">Industrial</div>
               <h4>Warehouse Roofing</h4>
-              <p>
-                Heavy-duty trussless roofing designed for maximum storage space,
-                weather resilience, and long-term structural reliability.
-              </p>
             </div>
-          </div>
+          </Link>
+          <Link href="/projects" className="app-card" style={{ textDecoration: "none", color: "inherit" }}>
+            <div className="app-img-wrapper">
+              <img src="/Residential%20Roofing.webp" alt="Residential Roofing project" />
+            </div>
+            <div className="app-card-content">
+              <h4>Residential Roofing</h4>
+            </div>
+          </Link>
         </div>
       </section>
 

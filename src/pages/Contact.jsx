@@ -327,28 +327,21 @@ export default function Contact() {
           }
         }
         @media (max-width: 768px) {
-          .contact-container {
-            padding: 20px 16px;
-          }
-          .contact-card-content {
-            padding: 24px;
-            gap: 32px;
-          }
-          .contact-title {
-            font-size: 24px;
-          }
-          .image-overlay h2 {
-            font-size: 20px;
-          }
+          .contact-container { padding: 20px 12px; }
+          .contact-card-content { padding: 16px; gap: 24px; }
+          .contact-title { font-size: 20px; }
+          .image-overlay h2 { font-size: 18px; }
+          .form-title { font-size: 18px; margin-bottom: 16px; }
+          .contact-detail { font-size: 12px; gap: 12px; }
+          .detail-icon { width: 32px; height: 32px; min-width: 32px; }
+          .detail-icon svg { width: 16px; height: 16px; }
+          .form-group input, .form-group textarea { padding: 10px 14px; font-size: 12px; }
+          .submit-btn { padding: 12px 20px; font-size: 13px; }
+          .branch-tag { font-size: 10px; padding: 3px 8px; }
         }
         @media (max-width: 480px) {
-          .contact-card-content {
-            padding: 16px;
-          }
-          .submit-btn {
-            padding: 12px 24px;
-            font-size: 14px;
-          }
+          .contact-card-content { padding: 12px; gap: 16px; }
+          .contact-container { padding: 12px 8px; }
         }
 
         .reveal-group {

@@ -785,7 +785,40 @@ export default function Projects() {
           }
           
           .projects-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+          }
+          
+          .project-image-wrapper {
+            height: 160px;
+          }
+          
+          .project-info {
+            padding: 16px;
+          }
+          
+          .project-title {
+            font-size: 14px;
+            margin-bottom: 8px;
+            white-space: normal;
+            line-height: 1.3;
+          }
+          
+          .project-category {
+            top: 10px;
+            right: 10px;
+            padding: 4px 10px;
+            font-size: 9px;
+          }
+          
+          .project-meta {
+            font-size: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
+          }
+          
+          .project-meta span {
+            font-size: 9px;
           }
           
           .modal-info {

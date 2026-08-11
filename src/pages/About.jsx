@@ -267,7 +267,7 @@ export default function About() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(135deg, var(--orange) 0%, #b01515 100%);
+          background: transparent;
           max-width: 100%;
           width: fit-content;
         }
@@ -883,10 +883,15 @@ export default function About() {
           .about-news-tiles {
             padding: 60px 24px;
           }
-          .expertise-grid { grid-template-columns: 1fr; }
+          .expertise-grid { grid-template-columns: repeat(4, 1fr); gap: 1px; }
+          .expertise-card { padding: 12px 4px; }
+          .expertise-icon { width: 26px; height: 26px; margin-bottom: 8px; }
+          .expertise-card h4 { font-size: 9px; line-height: 1.2; word-wrap: break-word; hyphens: auto; }
           .services-detail-grid { grid-template-columns: 1fr; }
           .about-hero-buttons { flex-direction: column; align-items: flex-start; }
-          .mission-grid-images { height: 400px; }
+          .mission-grid-images { height: 240px; }
+          .about-hero-image img { max-height: 220px; }
+          .image-card { height: 200px; }
           .tiles-grid { grid-template-columns: 1fr; }
           .tile-large .tile-title { font-size: 24px; }
         }
