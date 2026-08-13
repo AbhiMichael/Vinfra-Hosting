@@ -1408,7 +1408,7 @@ export default function HomePage() {
     const urlList = [];
     SETS.forEach(({ folder, count }) => {
       for (let i = 1; i <= count; i++) {
-        urlList.push(`/${folder}/frame_${padFrameNum(i)}.jpg`);
+        urlList.push(`/${folder}/frame_${padFrameNum(i)}.webp`);
       }
     });
 
@@ -1646,7 +1646,7 @@ export default function HomePage() {
           {/* Final image revealed at last frame */}
           <img
             ref={finalImgRef}
-            src="/final.png"
+            src="/final.webp"
             alt="Final frame"
             className="hero-final-image"
             aria-hidden="true"
@@ -1947,7 +1947,7 @@ export default function HomePage() {
           <div className="evo-flip-container">
             <div className="evo-flip-inner">
               <div className="evo-flip-front">
-                <img src="/e1.png" alt="Precision Roof Engineering" />
+                <img src="/e1.webp" alt="Precision Roof Engineering" />
               </div>
               <div className="evo-flip-back evo-card">
                 <div className="evo-card-orange-dot" />
@@ -1976,7 +1976,7 @@ export default function HomePage() {
           <div className="evo-flip-container">
             <div className="evo-flip-inner">
               <div className="evo-flip-front">
-                <img src="/e2.png" alt="Thermal Shield Performance" />
+                <img src="/e2.webp" alt="Thermal Shield Performance" />
               </div>
               <div
                 className="evo-flip-back evo-card"
@@ -2008,7 +2008,7 @@ export default function HomePage() {
           <div className="evo-flip-container">
             <div className="evo-flip-inner">
               <div className="evo-flip-front">
-                <img src="/e3.png" alt="Rainproof Lifecycle" />
+                <img src="/e3.webp" alt="Rainproof Lifecycle" />
               </div>
               <div className="evo-flip-back evo-card">
                 <div className="evo-card-orange-dot" />

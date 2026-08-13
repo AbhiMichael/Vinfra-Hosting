@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 // Import your image for the left side
-import steelImage from "../assets/material.png";
+import steelImage from "../assets/material.webp";
 
 export default function Materials() {
   useEffect(() => {
@@ -189,7 +189,7 @@ export default function Materials() {
       `}</style>
 
       <div className="materials-container reveal-group">
-        {/* Left side – img1.png */}
+        {/* Left side – img1.webp */}
         <div className="materials-image">
           <img src={steelImage.src} alt="COLORBOND XMA Steel cross-section" />
         </div>
