@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Navbar from "../components/Navbar";
 
@@ -14,6 +14,8 @@ import Logo from "../assets/logo1.webp";
 
 const GLOBAL_STYLES = `
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -87,20 +89,38 @@ const GLOBAL_STYLES = `
 
         .scroll-container {
           position: relative;
-          height: 100vh;
+          height: calc(5500px + 100vh); /* 1100 frames × 5px + 100vh buffer so sticky holds through last frame */
           background: #000000;
           width: 100%;
         }
 
         .sticky-wrapper {
-          position: relative;
-          width: 100vw; height: 100vh;
+          position: sticky;
+          top: 0;
+          width: 100vw;
+          height: 100vh;
           overflow: hidden;
           background: #000000;
         }
 
-        video.hero-sequence-video {
-          width: 100vw; height: 100vh; object-fit: cover; display: block;
+        canvas.hero-sequence-canvas {
+          width: 100vw;
+          height: 100vh;
+          display: block;
+          object-fit: cover;
+          background: #000;
+        }
+
+        .hero-final-image {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0;
+          transition: opacity 0.6s ease;
+          pointer-events: none;
+          z-index: 1;
         }
 
         .hero-overlay-ui { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
@@ -212,10 +232,11 @@ const GLOBAL_STYLES = `
         .evolution-title { font-family: var(--font-display); font-size: clamp(40px, 6vw, 84px); font-weight: 400; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 24px; }
         
         .evolution-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap: 1px; background: rgba(15,20,24,0.11); border-top: 1px solid rgba(15,20,24,0.15); border-bottom: 1px solid rgba(15,20,24,0.15); margin-top: 40px; }
-        .evo-card { background: var(--steel-bg); padding: 40px 24px; display: flex; flex-direction: column; justify-content: space-between; min-height: 380px; position: relative; }
-        .evo-card.image-box { padding: 0; overflow: hidden; }
+        .evo-card { background: var(--steel-bg); padding: 40px 24px; display: flex; flex-direction: column; justify-content: space-between; min-height: 380px; height: 380px; position: relative; }
+        .evo-card.image-box { padding: 0; overflow: hidden; height: 380px; }
         .evo-card.image-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
         .evo-card.image-box:hover img { transform: scale(1.05); }
+        .evo-card.image-box video { width: 125%; height: 100%; object-fit: cover; display: block; margin-left: -25%; }
         
         .evo-card-orange-dot { position: absolute; top: -4px; left: -4px; width: 8px; height: 8px; background: var(--orange); border-radius: 50%; opacity: 0; transition: opacity 0.3s; }
         .evo-card:hover .evo-card-orange-dot { opacity: 1; }
@@ -223,7 +244,39 @@ const GLOBAL_STYLES = `
         .evo-card h3 { font-family: var(--font-display); font-size: 28px; font-weight: 500; margin-bottom: 16px; letter-spacing: -0.01em; }
         .evo-card p { font-size: 15px; line-height: 1.6; color: rgba(15,20,24,0.7); }
         .evo-icon { width: 36px; height: 36px; opacity: 0.8; margin-top: 40px; stroke-width: 1.2; }
-
+        
+        .evo-flip-container {
+          perspective: 1000px;
+          min-height: 380px;
+          height: 380px;
+          background: transparent;
+        }
+        .evo-flip-inner {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          transform-style: preserve-3d;
+        }
+        .evo-flip-container:hover .evo-flip-inner {
+          transform: rotateY(180deg);
+        }
+        .evo-flip-front, .evo-flip-back {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          backface-visibility: hidden;
+          overflow: hidden;
+        }
+        .evo-flip-front img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .evo-flip-back {
+          transform: rotateY(180deg);
+        }
         .page-stories { 
           background: var(--orange); 
           color: var(--white); 
@@ -847,12 +900,214 @@ const GLOBAL_STYLES = `
           border-radius: 4px;
         }
 
+        .landing-hero-title {
+          font-family: 'Montserrat', sans-serif;
+          font-size: clamp(32px, 4.5vw, 56px);
+          font-weight: 700;
+          text-transform: uppercase;
+          line-height: 1.1;
+          letter-spacing: -0.02em;
+          margin-bottom: 24px;
+          color: var(--white);
+        }
+        .landing-hero-title span { color: var(--orange); }
+        .landing-hero-description {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 17px;
+          font-weight: 600;
+          text-transform: uppercase;
+          line-height: 1.5;
+          color: var(--steel-light);
+          margin-bottom: 32px;
+          max-width: 800px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .landing-stats-container {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 48px;
+        }
+        .landing-stat-card {
+          background: rgba(15,20,24,0.7);
+          border: 1px solid var(--panel-border);
+          border-radius: 12px;
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          padding: 48px 24px;
+          text-align: center;
+          transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        .landing-stat-card:hover { background: rgba(138,15,15,0.4); }
+        .landing-stat-number {
+          font-family: 'Montserrat', sans-serif;
+          font-size: clamp(48px, 5vw, 64px);
+          font-weight: 700;
+          color: var(--orange);
+          letter-spacing: -0.02em;
+          margin-bottom: 12px;
+        }
+        .landing-stat-label {
+          font-size: 14px;
+          font-weight: 500;
+          color: var(--white);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .benefit-card-small {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          min-width: 250px;
+          color: var(--white);
+        }
+        .benefit-icon-small {
+          color: var(--white);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .benefit-icon-small svg {
+          width: 32px;
+          height: 32px;
+        }
+        .benefit-text-small {
+          display: flex;
+          flex-direction: column;
+          text-align: left;
+        }
+        .benefit-title-small {
+          font-family: var(--font-display);
+          font-weight: 700;
+          font-size: 16px;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          margin-bottom: 4px;
+        }
+        .benefit-desc-small {
+          font-size: 12px;
+          color: var(--steel-light);
+        }
+
+        .pan-india-title {
+          font-family: 'Montserrat', sans-serif;
+          font-size: clamp(32px, 4vw, 56px);
+          font-weight: 900;
+          text-transform: uppercase;
+          line-height: 1.1;
+          letter-spacing: -0.02em;
+          color: #000000fa;
+          opacity: 0.7;
+        }
+
+        .pan-india-desc {
+          font-size: 14px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          line-height: 1.5;
+          color: #000000;
+          max-width: 400px;
+        }
+
+        .process-item-small {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          color: var(--white);
+          opacity: 0.6;
+          mix-blend-mode: overlay;
+        }
+        .process-icon-small {
+          color: var(--white);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .process-icon-small svg {
+          width: 32px;
+          height: 32px;
+        }
+        .process-name-small {
+          font-family: 'Rubik Glitch', sans-serif;
+          font-weight: 400;
+          font-size: 36px;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .landing-materials-text {
+          padding: 30px;
+          border-radius: 16px;
+          color: #000;
+          opacity: 0.75;
+          mix-blend-mode: overlay;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          text-align: left;
+        }
+        .landing-materials-layers {
+          padding: 30px;
+          border-radius: 16px;
+          color: #000;
+          opacity: 0.75;
+          mix-blend-mode: overlay;
+          display: flex;
+          flex-direction: column;
+        }
+        .landing-product-badge {
+          font-size: 11px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.2em;
+          color: #000;
+          margin-bottom: 12px;
+        }
+        .landing-product-title {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 32px;
+          font-weight: 800;
+          color: #000;
+          margin-bottom: 20px;
+          line-height: 1.2;
+        }
+        .landing-product-title span {
+          color: #000;
+        }
+        .landing-product-description {
+          font-size: 14px;
+          line-height: 1.5;
+          color: #000;
+          margin-bottom: 24px;
+          font-weight: 600;
+        }
+        .landing-layers-list {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          align-items: flex-start;
+          text-align: left;
+        }
+        .landing-layer-item {
+          padding: 10px 14px;
+          background: rgba(0,0,0,0.05);
+          border: 1px solid rgba(0,0,0,0.1);
+          border-radius: 6px;
+          font-size: 13px;
+          color: #000;
+          font-weight: 600;
+        }
+
         /* =============================================
            MOBILE RESPONSIVENESS – Homepage
            ============================================= */
         @media (max-width: 1024px) {
           .hero-content { padding: 100px 32px 60px 32px; }
           .premium-stats-wrapper { right: 24px; bottom: 80px; width: 180px; }
+          .landing-stats-container { grid-template-columns: repeat(2, 1fr); }
           .page-evolution { padding: 60px 32px 80px 32px; }
           .evolution-grid { grid-template-columns: 1fr 1fr; }
           .page-stories { grid-template-columns: 1fr; min-height: auto; }
@@ -876,6 +1131,10 @@ const GLOBAL_STYLES = `
           .premium-stat-box { width: auto; flex: none; min-width: unset; padding: 6px 10px; }
           .premium-stat-number { font-size: 16px !important; }
           .premium-stat-label { font-size: 10px !important; }
+          .landing-stats-container { grid-template-columns: 1fr 1fr; }
+          .landing-stat-card { padding: 24px 16px; }
+          .landing-stat-number { font-size: 32px !important; }
+          .landing-stat-label { font-size: 11px; }
           .page-evolution { padding: 60px 20px; }
           .evolution-grid { grid-template-columns: 1fr; }
           .evo-card { min-height: auto; padding: 32px 20px; }
@@ -1038,6 +1297,57 @@ const SERVICES = [
   },
 ];
 
+const IconCrane = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <polygon points="12 4 2 12 22 12 12 4" /> <line x1="12" y1="12" x2="12" y2="20" /> <rect x="8" y="20" width="8" height="2" /> </svg>);
+const IconNewRoof = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /> <polyline points="9 22 9 12 15 12 15 22" /> </svg>);
+const IconRepair = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <circle cx="12" cy="12" r="10" /> <path d="M12 8v4l3 3" /> <path d="M8 8L12 4l4 4" /> </svg>);
+const IconFabrication = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <rect x="4" y="6" width="16" height="12" rx="1" /> <path d="M8 6V4h8v2" /> <line x1="8" y1="10" x2="16" y2="10" /> <line x1="8" y1="14" x2="12" y2="14" /> </svg>);
+const IconCoil = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <circle cx="12" cy="12" r="8" /> <path d="M4 4l4 4M20 4l-4 4M4 20l4-4M20 20l-4-4" /> </svg>);
+const IconReplace = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <path d="M21 2v6h-6" /> <path d="M3 12a9 9 0 0 1 15-6.7L21 8" /> <path d="M3 22v-6h6" /> <path d="M21 12a9 9 0 0 1-15 6.7L3 16" /> </svg>);
+const IconFlashing = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <path d="M12 2v4M12 18v4M4 12H2M22 12h-2" /> <circle cx="12" cy="12" r="4" /> <path d="M7 5l2 2M17 7l2-2" /> </svg>);
+
+const processLeft = [
+  { name: "Crane setup & Installation", icon: <IconCrane /> },
+  { name: "Repair and Inspection", icon: <IconRepair /> },
+  { name: "Panel Fabrication", icon: <IconFabrication /> }
+];
+const processRight = [
+  { name: "Coil Loading", icon: <IconCoil /> },
+  { name: "Roof Replacement", icon: <IconReplace /> },
+  { name: "Roof Flashing", icon: <IconFlashing /> }
+];
+
+const coatingLayers = [
+  "Top Coat* paint with Super Durable Polyester Resin (Nominal 20µm)**",
+  "Universal Corrosion Inhibitive Primer (Nominal 5µm)**",
+  "Conversion Coating",
+  "ZINCALUME® – Zn-Al Alloy Coated Steel Substrate",
+  "Conversion Coating",
+  "Universal Corrosion Inhibitive Primer (Nominal 5µm)**",
+  "Backing Coat (Nominal 5µm)* (Refer Note 4)",
+];
+
+const IconWideSpan = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18M3 15h18M9 3v18M15 3v18" /> </svg>);
+const IconCostSaving = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <circle cx="12" cy="12" r="10" /> <path d="M12 6v6l4 2" /> <path d="M16 8l-4-4-4 4" /> </svg>);
+const IconFastProcess = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <circle cx="12" cy="12" r="10" /> <polyline points="12 6 12 12 16 14" /> <path d="M4 4L8 8" /> <path d="M20 4L16 8" /> </svg>);
+const IconStrong = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <path d="M12 2L2 7l10 5 10-5-10-5z" /> <path d="M2 17l10 5 10-5" /> <path d="M2 12l10 5 10-5" /> </svg>);
+const IconSturdy = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <rect x="3" y="5" width="18" height="14" rx="2" /> <line x1="7" y1="9" x2="17" y2="9" /> <line x1="7" y1="13" x2="17" y2="13" /> <path d="M12 19v2" /> </svg>);
+const IconSupport = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <circle cx="12" cy="12" r="10" /> <path d="M12 8v4l2 2" /> <path d="M4 4L8 8" /> <path d="M20 4L16 8" /> </svg>);
+const IconExperts = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <path d="M12 2a5 5 0 0 0-5 5c0 2 1 3 2 4l-2 3h10l-2-3c1-1 2-2 2-4a5 5 0 0 0-5-5z" /> <line x1="8" y1="22" x2="16" y2="22" /> </svg>);
+const IconInstallation = () => (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"> <rect x="4" y="4" width="16" height="16" rx="2" /> <line x1="9" y1="8" x2="15" y2="8" /> <line x1="9" y1="12" x2="15" y2="12" /> <line x1="9" y1="16" x2="13" y2="16" /> </svg>);
+
+const benefitsTop = [
+  { name: "Wide Span", icon: <IconWideSpan />, description: "Clear spans up to 50m" },
+  { name: "Cost Saving", icon: <IconCostSaving />, description: "Reduced material costs" },
+  { name: "Fast Process", icon: <IconFastProcess />, description: "Installation time reduced" },
+  { name: "Strong", icon: <IconStrong />, description: "High tensile strength" }
+];
+const benefitsBottom = [
+  { name: "Sturdy", icon: <IconSturdy />, description: "Engineered to withstand" },
+  { name: "Support", icon: <IconSupport />, description: "24/7 Support" },
+  { name: "Experts", icon: <IconExperts />, description: "Expert team" },
+  { name: "Installation", icon: <IconInstallation />, description: "Quick installation" }
+];
+
 const BENEFITS = [
   { name: "Wide Span", icon: "⟷" },
   { name: "Maintenance Free", icon: "✦" },
@@ -1052,12 +1362,108 @@ const BENEFITS = [
 export default function HomePage() {
   const [activeNav, setActiveNav] = useState("Home");
   const [loaded, setLoaded] = useState(false);
+  const [framesReady, setFramesReady] = useState(false);
 
+  // Canvas ref and preloaded image store
+  const canvasRef = useRef(null);
+  const framesRef = useRef([]);
+  const currentFrameRef = useRef(0);
+  const scrollContainerRef = useRef(null);
+  const finalImgRef = useRef(null);
+  const animFrameRef = useRef(null);
+  const existingUIRef = useRef(null);
+  const newUIRef = useRef(null);
+  const statsUIRef = useRef(null);
+  const statsTriggeredRef = useRef(false);
+  const yearCounterRef = useRef(null);
+  const expertsCounterRef = useRef(null);
+  const projectsCounterRef = useRef(null);
+  const citiesCounterRef = useRef(null);
+  const benefitsUIRef = useRef(null);
+  const benefitsTopRef = useRef(null);
+  const benefitsBottomRef = useRef(null);
+  const panIndiaUIRef = useRef(null);
+  const processUIRef = useRef(null);
+  const processLeftRef = useRef(null);
+  const processRightRef = useRef(null);
+  const materialUIRef = useRef(null);
+
+  // Frame configuration
+  const SETS = [
+    { folder: "set1", count: 500 },
+    { folder: "set2", count: 300 },
+    { folder: "set3", count: 300 },
+  ];
+  const TOTAL_FRAMES = 1100;
+  const SCROLL_PER_FRAME = 5; // px scroll per frame
+
+  // Pad number to 2 digits minimum (e.g. 1 -> "01", 10 -> "10", 100 -> "100")
+  const padFrameNum = useCallback((n) => String(n).padStart(2, "0"), []);
+
+  // ─── Preload all 1100 frames on mount ─────────────────────────────────
+  useEffect(() => {
+    let loadedCount = 0;
+
+    // Build ordered URL list: set1 1-500, set2 1-300, set3 1-300
+    const urlList = [];
+    SETS.forEach(({ folder, count }) => {
+      for (let i = 1; i <= count; i++) {
+        urlList.push(`/${folder}/frame_${padFrameNum(i)}.jpg`);
+      }
+    });
+
+    const total = urlList.length;
+    framesRef.current = new Array(total).fill(null);
+
+    const BATCH_SIZE = 30;
+    let batchStart = 0;
+
+    function dispatchProgress(loaded) {
+      window.dispatchEvent(
+        new CustomEvent("frameload-progress", { detail: { loaded, total } })
+      );
+    }
+
+    function loadBatch() {
+      if (batchStart >= total) return;
+      const end = Math.min(batchStart + BATCH_SIZE, total);
+      let batchDone = 0;
+      const batchSize = end - batchStart;
+
+      for (let i = batchStart; i < end; i++) {
+        const img = new Image();
+        const idx = i;
+        img.onload = img.onerror = () => {
+          framesRef.current[idx] = img;
+          loadedCount++;
+          batchDone++;
+          dispatchProgress(loadedCount);
+
+          if (batchDone === batchSize) {
+            batchStart = end;
+            if (loadedCount >= total) {
+              window.dispatchEvent(new CustomEvent("frameload-complete"));
+              setFramesReady(true);
+            } else {
+              loadBatch();
+            }
+          }
+        };
+        img.src = urlList[i];
+      }
+    }
+
+    loadBatch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ─── CSS loaded class for entry animations ─────────────────────────────
   useEffect(() => {
     const t = setTimeout(() => setLoaded(true), 80);
     return () => clearTimeout(t);
   }, []);
 
+  // ─── Intersection observer for reveal animations ────────────────────────
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -1076,6 +1482,153 @@ export default function HomePage() {
     return () => observer.disconnect();
   }, []);
 
+  // ─── Draw a single frame to canvas (object-fit cover, centered) ────────
+  const drawFrame = useCallback((index) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const img = framesRef.current[index];
+    if (!img || !img.complete || img.naturalWidth === 0) return;
+
+    const ctx = canvas.getContext("2d");
+    const cw = canvas.width;
+    const ch = canvas.height;
+    const iw = img.naturalWidth;
+    const ih = img.naturalHeight;
+
+    // Cover fit: scale to fill, center crop
+    const scale = Math.max(cw / iw, ch / ih);
+    const sw = iw * scale;
+    const sh = ih * scale;
+    const sx = (cw - sw) / 2;
+    const sy = (ch - sh) / 2;
+
+    ctx.clearRect(0, 0, cw, ch);
+    ctx.drawImage(img, sx, sy, sw, sh);
+  }, []);
+
+  // ─── Scroll-driven canvas animation ────────────────────────────────────
+  useEffect(() => {
+    if (!framesReady) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      drawFrame(currentFrameRef.current);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    // Draw first frame immediately
+    drawFrame(0);
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      animFrameRef.current = requestAnimationFrame(() => {
+        ticking = false;
+        const scrollContainer = scrollContainerRef.current;
+        if (!scrollContainer) return;
+
+        const containerTop = scrollContainer.offsetTop;
+        const scrolled = Math.max(0, window.scrollY - containerTop);
+        const rawFrame = Math.floor(scrolled / SCROLL_PER_FRAME);
+        const frameIndex = Math.min(rawFrame, TOTAL_FRAMES - 1);
+
+        currentFrameRef.current = frameIndex;
+        drawFrame(frameIndex);
+
+        // Show/hide final image overlay at last frame
+        if (finalImgRef.current) {
+          finalImgRef.current.style.opacity = frameIndex >= TOTAL_FRAMES - 1 ? "1" : "0";
+        }
+
+        // Custom UI fading logic
+        if (existingUIRef.current) {
+          existingUIRef.current.style.opacity = frameIndex > 40 ? "0" : "1";
+          existingUIRef.current.style.pointerEvents = frameIndex > 40 ? "none" : "auto";
+        }
+
+        if (newUIRef.current) {
+          const isNewUIVisible = frameIndex >= 45 && frameIndex < 120;
+          newUIRef.current.style.opacity = isNewUIVisible ? "1" : "0";
+          newUIRef.current.style.pointerEvents = isNewUIVisible ? "auto" : "none";
+        }
+
+        if (statsUIRef.current) {
+          const isStatsVisible = frameIndex >= 122 && frameIndex < 260;
+          statsUIRef.current.style.opacity = isStatsVisible ? "1" : "0";
+          statsUIRef.current.style.pointerEvents = isStatsVisible ? "auto" : "none";
+        }
+
+        if (benefitsUIRef.current && benefitsTopRef.current && benefitsBottomRef.current) {
+          if (frameIndex >= 320 && frameIndex <= 432) {
+            benefitsUIRef.current.style.opacity = "1";
+            const progress = (frameIndex - 320) / (432 - 320);
+            const translateX = 100 - (progress * 200);
+            benefitsTopRef.current.style.transform = `translateX(${translateX}vw)`;
+            benefitsBottomRef.current.style.transform = `translateX(${translateX}vw)`;
+          } else {
+            benefitsUIRef.current.style.opacity = "0";
+          }
+        }
+
+        if (frameIndex >= 122 && !statsTriggeredRef.current) {
+          statsTriggeredRef.current = true;
+          const targets = { years: 10, experts: 25, projects: 500, cities: 100 };
+          const duration = 2000;
+          const stepTime = 20;
+          const steps = duration / stepTime;
+          let step = 0;
+          const interval = setInterval(() => {
+            step++;
+            if (yearCounterRef.current) yearCounterRef.current.innerText = Math.min(Math.floor((step / steps) * targets.years), targets.years) + "+";
+            if (expertsCounterRef.current) expertsCounterRef.current.innerText = Math.min(Math.floor((step / steps) * targets.experts), targets.experts);
+            if (projectsCounterRef.current) projectsCounterRef.current.innerText = Math.min(Math.floor((step / steps) * targets.projects), targets.projects) + "+";
+            if (citiesCounterRef.current) citiesCounterRef.current.innerText = Math.min(Math.floor((step / steps) * targets.cities), targets.cities) + "+";
+            if (step >= steps) clearInterval(interval);
+          }, stepTime);
+        }
+
+        if (panIndiaUIRef.current) {
+          const isPanIndiaVisible = frameIndex >= 434 && frameIndex <= 493;
+          panIndiaUIRef.current.style.opacity = isPanIndiaVisible ? "1" : "0";
+          panIndiaUIRef.current.style.pointerEvents = isPanIndiaVisible ? "auto" : "none";
+        }
+
+        if (processUIRef.current && processLeftRef.current && processRightRef.current) {
+          if (frameIndex >= 501 && frameIndex <= 665) {
+            processUIRef.current.style.opacity = "1";
+            const progress = (frameIndex - 501) / (665 - 501);
+            const translateY = 100 - (progress * 200);
+            processLeftRef.current.style.transform = `rotateX(-10deg) translateY(${translateY}vh)`;
+            processRightRef.current.style.transform = `rotateX(-10deg) translateY(${translateY}vh)`;
+          } else {
+            processUIRef.current.style.opacity = "0";
+          }
+        }
+
+        if (materialUIRef.current) {
+          const isMaterialVisible = frameIndex >= 673 && frameIndex < 800;
+          materialUIRef.current.style.opacity = isMaterialVisible ? "1" : "0";
+          materialUIRef.current.style.pointerEvents = isMaterialVisible ? "auto" : "none";
+        }
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", resize);
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [framesReady, drawFrame]);
+
+
   return (
     <div className={`vinfra-root ${loaded ? "loaded" : ""}`}>
       <style dangerouslySetInnerHTML={{ __html: GLOBAL_STYLES }} />
@@ -1084,18 +1637,22 @@ export default function HomePage() {
       <Navbar />
 
       {/* PAGE 1: SCROLL SEQUENCE LANDING */}
-      <section className="scroll-container">
+      <section className="scroll-container" ref={scrollContainerRef}>
         <div className="sticky-wrapper">
-          <video
-            className="hero-sequence-video"
-            src="/cover.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
+          <canvas
+            ref={canvasRef}
+            className="hero-sequence-canvas"
+          />
+          {/* Final image revealed at last frame */}
+          <img
+            ref={finalImgRef}
+            src="/final.png"
+            alt="Final frame"
+            className="hero-final-image"
+            aria-hidden="true"
           />
           <div className="hero-overlay-ui">
-            <div className="hero-content">
+            <div className="hero-content" ref={existingUIRef} style={{ transition: 'opacity 0.5s ease' }}>
               <div className="hero-top-row">
                 <div className="hero-eyebrow">
                   Engineering structural steel &amp; advanced curvature
@@ -1132,6 +1689,235 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
+
+            <div
+              ref={newUIRef}
+              className="landing-hero-overlay"
+              style={{
+                position: 'absolute',
+                bottom: '2%',
+                left: '0',
+                right: '0',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center',
+                opacity: 0,
+                transition: 'opacity 0.5s ease',
+                pointerEvents: 'none',
+                zIndex: 5,
+                padding: '0 20px'
+              }}
+            >
+              <h1 className="landing-hero-title">
+                Crafting Excellence
+                <br />
+                <span>In Every Roof</span>
+              </h1>
+              <p className="landing-hero-description">
+                At Vinfra, we are committed to excellence, reliability, and client
+                satisfaction, making us a trusted name in the roofing industry.
+              </p>
+            </div>
+
+            <div
+              ref={statsUIRef}
+              className="landing-stats-overlay"
+              style={{
+                position: 'absolute',
+                bottom: '5%',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '100%',
+                maxWidth: '1200px',
+                opacity: 0,
+                transition: 'opacity 0.5s ease',
+                pointerEvents: 'none',
+                zIndex: 5,
+                padding: '0 20px'
+              }}
+            >
+              <div className="landing-stats-container">
+                <div className="landing-stat-card">
+                  <div className="landing-stat-number" ref={yearCounterRef}>0+</div>
+                  <div className="landing-stat-label">Years of experience</div>
+                </div>
+                <div className="landing-stat-card">
+                  <div className="landing-stat-number" ref={expertsCounterRef}>0</div>
+                  <div className="landing-stat-label">Roofing Experts</div>
+                </div>
+                <div className="landing-stat-card">
+                  <div className="landing-stat-number" ref={projectsCounterRef}>0+</div>
+                  <div className="landing-stat-label">Completed Projects</div>
+                </div>
+                <div className="landing-stat-card">
+                  <div className="landing-stat-number" ref={citiesCounterRef}>0+</div>
+                  <div className="landing-stat-label">Cities we serve</div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              ref={benefitsUIRef}
+              className="landing-benefits-overlay"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                pointerEvents: "none",
+                zIndex: 5,
+                overflow: "hidden",
+                opacity: 0
+              }}
+            >
+              <div
+                ref={benefitsTopRef}
+                className="benefits-marquee benefits-top"
+                style={{ position: 'absolute', top: '30%', display: 'flex', gap: '120px', whiteSpace: 'nowrap' }}
+              >
+                {benefitsTop.map((b, i) => (
+                  <div key={i} className="benefit-card-small">
+                    <div className="benefit-icon-small">{b.icon}</div>
+                    <div className="benefit-text-small">
+                      <div className="benefit-title-small">{b.name}</div>
+                      <div className="benefit-desc-small">{b.description}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div
+                ref={benefitsBottomRef}
+                className="benefits-marquee benefits-bottom"
+                style={{ position: 'absolute', bottom: '30%', display: 'flex', gap: '120px', whiteSpace: 'nowrap' }}
+              >
+                {benefitsBottom.map((b, i) => (
+                  <div key={i} className="benefit-card-small">
+                    <div className="benefit-icon-small">{b.icon}</div>
+                    <div className="benefit-text-small">
+                      <div className="benefit-title-small">{b.name}</div>
+                      <div className="benefit-desc-small">{b.description}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div
+              ref={panIndiaUIRef}
+              className="pan-india-overlay"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                opacity: 0,
+                transition: "opacity 0.5s ease",
+                pointerEvents: "none",
+                zIndex: 5
+              }}
+            >
+              <div style={{ position: "absolute", top: "10%", right: "5%", textAlign: "right" }}>
+                <h1 className="pan-india-title">
+                  Pan-India
+                  <br />
+                  Growth Story
+                </h1>
+              </div>
+              <div style={{ position: "absolute", bottom: "10%", right: "5%", textAlign: "right" }}>
+                <p className="pan-india-desc">
+                  Delivering trusted structural and engineering solutions across India,<br />
+                  backed by rapid growth, nationwide delivery, and a relentless focus<br />
+                  on quality in every region.
+                </p>
+              </div>
+            </div>
+
+            <div
+              ref={processUIRef}
+              className="process-overlay"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                pointerEvents: "none",
+                zIndex: 5,
+                overflow: "hidden",
+                opacity: 0,
+                display: "flex",
+                justifyContent: "center",
+                padding: "0",
+                perspective: "1000px"
+              }}
+            >
+              <div
+                ref={processLeftRef}
+                className="process-column"
+                style={{ flex: 1, display: "flex", flexDirection: "column", gap: "200px", marginTop: "20vh", alignItems: "flex-end", textAlign: "right", transformOrigin: "top center", paddingRight: "12vw" }}
+              >
+                {processLeft.map((p, i) => (
+                  <div key={i} className="process-item-small" style={{ flexDirection: "row-reverse", marginRight: `${(2 - i) * 120}px` }}>
+                    <div className="process-icon-small">{p.icon}</div>
+                    <div className="process-name-small">{p.name}</div>
+                  </div>
+                ))}
+              </div>
+              <div
+                ref={processRightRef}
+                className="process-column"
+                style={{ flex: 1, display: "flex", flexDirection: "column", gap: "200px", marginTop: "20vh", alignItems: "flex-start", textAlign: "left", transformOrigin: "top center", paddingLeft: "12vw" }}
+              >
+                {processRight.map((p, i) => (
+                  <div key={i} className="process-item-small" style={{ marginLeft: `${(2 - i) * 120}px` }}>
+                    <div className="process-icon-small">{p.icon}</div>
+                    <div className="process-name-small">{p.name}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div
+              ref={materialUIRef}
+              className="material-overlay"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                opacity: 0,
+                transition: "opacity 0.5s ease",
+                pointerEvents: "none",
+                zIndex: 5,
+              }}
+            >
+              <div className="landing-materials-text" style={{ position: "absolute", top: "15%", left: "5%", width: "35%", maxWidth: "450px" }}>
+                <div className="landing-product-badge">PREMIUM MATERIAL</div>
+                <h1 className="landing-product-title">
+                  COLORBOND<span>®</span> XMA STEEL
+                </h1>
+                <p className="landing-product-description">
+                  COLORBOND® XMA steel – pre-painted steel is an efficient solution
+                  for Properties of Steel Base (other steel base possible on design
+                  flexibility and outdoor durability). It is an ideal choice for manu
+                  accessories.
+                </p>
+              </div>
+
+              <div className="landing-materials-layers" style={{ position: "absolute", top: "15%", left: "40%", transform: "translateX(-50%)", width: "30%", minWidth: "300px" }}>
+                <div className="landing-layers-list">
+                  {coatingLayers.map((layer, idx) => (
+                    <div key={idx} className="landing-layer-item">
+                      {layer}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1148,70 +1934,103 @@ export default function HomePage() {
         </div>
         <div className="evolution-grid">
           <div className="evo-card image-box">
-            <img src={ProjectOne.src} alt="Vinfra advanced roofing system" />
+            <video
+              src="/one.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+            />
           </div>
-          <div className="evo-card">
-            <div className="evo-card-orange-dot" />
-            <div>
-              <h3>Precision Roof Engineering</h3>
-              <p>
-                Vinfra’s roofing systems are engineered for wide-span coverage
-                and exact fit, delivering industrial strength without
-                compromising on elegant architectural form.
-              </p>
+          {/* Card 1 */}
+          <div className="evo-flip-container">
+            <div className="evo-flip-inner">
+              <div className="evo-flip-front">
+                <img src="/e1.png" alt="Precision Roof Engineering" />
+              </div>
+              <div className="evo-flip-back evo-card">
+                <div className="evo-card-orange-dot" />
+                <div>
+                  <h3>Precision Roof Engineering</h3>
+                  <p>
+                    Vinfra’s roofing systems are engineered for wide-span coverage
+                    and exact fit, delivering industrial strength without
+                    compromising on elegant architectural form.
+                  </p>
+                </div>
+                <svg
+                  className="evo-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <rect x="4" y="4" width="16" height="16" rx="2" />
+                  <path d="M9 9h6v6H9z" />
+                </svg>
+              </div>
             </div>
-            <svg
-              className="evo-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-            >
-              <rect x="4" y="4" width="16" height="16" rx="2" />
-              <path d="M9 9h6v6H9z" />
-            </svg>
           </div>
-          <div
-            className="evo-card"
-            style={{ backgroundColor: "rgba(233,238,242,0.25)" }}
-          >
-            <div className="evo-card-orange-dot" />
-            <div>
-              <h3>Thermal Shield Performance</h3>
-              <p>
-                Our thermal roof membranes and coated panels cut heat gain,
-                improve energy efficiency, and keep interiors comfortable even
-                under India’s hottest skies.
-              </p>
+
+          {/* Card 2 */}
+          <div className="evo-flip-container">
+            <div className="evo-flip-inner">
+              <div className="evo-flip-front">
+                <img src="/e2.png" alt="Thermal Shield Performance" />
+              </div>
+              <div
+                className="evo-flip-back evo-card"
+                style={{ backgroundColor: "rgba(233,238,242,0.25)" }}
+              >
+                <div className="evo-card-orange-dot" />
+                <div>
+                  <h3>Thermal Shield Performance</h3>
+                  <p>
+                    Our thermal roof membranes and coated panels cut heat gain,
+                    improve energy efficiency, and keep interiors comfortable even
+                    under India’s hottest skies.
+                  </p>
+                </div>
+                <svg
+                  className="evo-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2M12 20v2M2 12h2M20 12h2" />
+                </svg>
+              </div>
             </div>
-            <svg
-              className="evo-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-            >
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2M12 20v2M2 12h2M20 12h2" />
-            </svg>
           </div>
-          <div className="evo-card">
-            <div className="evo-card-orange-dot" />
-            <div>
-              <h3>Rainproof Lifecycle</h3>
-              <p>
-                Designed for seamless assembly and long-term durability, Vinfra
-                roofing ensures leak-free protection and dependable performance
-                for every industrial and commercial project.
-              </p>
+
+          {/* Card 3 */}
+          <div className="evo-flip-container">
+            <div className="evo-flip-inner">
+              <div className="evo-flip-front">
+                <img src="/e3.png" alt="Rainproof Lifecycle" />
+              </div>
+              <div className="evo-flip-back evo-card">
+                <div className="evo-card-orange-dot" />
+                <div>
+                  <h3>Rainproof Lifecycle</h3>
+                  <p>
+                    Designed for seamless assembly and long-term durability, Vinfra
+                    roofing ensures leak-free protection and dependable performance
+                    for every industrial and commercial project.
+                  </p>
+                </div>
+                <svg
+                  className="evo-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" />
+                  <path d="M12 18V6" />
+                </svg>
+              </div>
             </div>
-            <svg
-              className="evo-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-            >
-              <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" />
-              <path d="M12 18V6" />
-            </svg>
           </div>
         </div>
       </section>

@@ -25,11 +25,15 @@ export const metadata = {
 };
 
 import WhatsAppChat from "../components/WhatsAppChat";
+import LoadingScreen from "../components/LoadingScreen";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+      <head>
+      </head>
       <body>
+        <LoadingScreen />
         {children}
         <WhatsAppChat />
       </body>

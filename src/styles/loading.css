@@ -1,0 +1,89 @@
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  /* Cinematic silver/grey to white gradient background */
+  background: radial-gradient(circle at center, #ffffff 0%, #e0e0e0 60%, #b8b8b8 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease-out;
+  opacity: 1;
+}
+
+.loading-container.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  /* Scale everything down to make it a little smaller */
+  transform: scale(0.8);
+  /* Add a subtle cinematic shadow around the content */
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.15));
+}
+
+.logo-loading-wrapper {
+  position: relative;
+  width: 250px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.loading-logo {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.split-logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.base-logo {
+  opacity: 0.15;
+  filter: grayscale(100%);
+}
+
+.fill-logo {
+  /* Smooth transition for the clip-path fill effect */
+  transition: clip-path 0.05s linear;
+}
+
+.loading-text-wrapper {
+  margin-bottom: -15px; /* Pull text closer to the logo arch */
+  display: flex;
+  justify-content: center;
+}
+
+.loading-text-arch {
+  font-size: 26px;
+  font-weight: 800;
+  font-family: var(--font-display), 'Space Grotesk', sans-serif;
+  letter-spacing: 12px; /* Spread letters along the curve */
+}
+
+.base-text-arch {
+  fill: #a0a0a0;
+  opacity: 0.2;
+}
+
+.fill-text-arch {
+  fill: #000000;
+  /* Cinematic shadow to text */
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+  transition: clip-path 0.05s linear;
+}
