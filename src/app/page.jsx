@@ -31,6 +31,7 @@ const GLOBAL_STYLES = `
         }
 
         body { 
+          max-width: 100%;
           overflow-x: hidden; 
           background: #000000; 
           font-family: var(--font-body);
@@ -97,14 +98,14 @@ const GLOBAL_STYLES = `
         .sticky-wrapper {
           position: sticky;
           top: 0;
-          width: 100vw;
+          width: 100%;
           height: 100vh;
           overflow: hidden;
           background: #000000;
         }
 
         canvas.hero-sequence-canvas {
-          width: 100vw;
+          width: 100%;
           height: 100vh;
           display: block;
           object-fit: cover;
@@ -1039,6 +1040,7 @@ const GLOBAL_STYLES = `
         }
 
         .landing-materials-text {
+          position: absolute; top: 15%; left: 5%; width: 35%; max-width: 450px;
           padding: 30px;
           border-radius: 16px;
           color: #000;
@@ -1050,6 +1052,7 @@ const GLOBAL_STYLES = `
           text-align: left;
         }
         .landing-materials-layers {
+          position: absolute; top: 15%; left: 40%; transform: translateX(-50%); width: 30%; min-width: 300px;
           padding: 30px;
           border-radius: 16px;
           color: #000;
@@ -1101,10 +1104,29 @@ const GLOBAL_STYLES = `
           font-weight: 600;
         }
 
+        .process-column-left {
+          flex: 1; display: flex; flex-direction: column; gap: 200px; margin-top: 20vh; align-items: flex-end; text-align: right; transform-origin: top center; padding-right: 12vw;
+        }
+        .process-column-right {
+          flex: 1; display: flex; flex-direction: column; gap: 200px; margin-top: 20vh; align-items: flex-start; text-align: left; transform-origin: top center; padding-left: 12vw;
+        }
+        .process-item-small-left {
+          flex-direction: row-reverse;
+        }
+        .process-item-small-right {
+          flex-direction: row;
+        }
+
         /* =============================================
            MOBILE RESPONSIVENESS – Homepage
            ============================================= */
         @media (max-width: 1024px) {
+          .landing-materials-text, .landing-materials-layers {
+            position: relative !important; top: auto !important; left: auto !important; transform: none !important; width: 100% !important; max-width: none !important; min-width: auto !important;
+            padding: 20px;
+          }
+          .landing-materials-layers { margin-top: 20px; }
+          .material-overlay { display: flex !important; flex-direction: column !important; justify-content: center !important; padding: 24px; position: absolute; inset: 0; }
           .hero-content { padding: 100px 32px 60px 32px; }
           .premium-stats-wrapper { right: 24px; bottom: 80px; width: 180px; }
           .landing-stats-container { grid-template-columns: repeat(2, 1fr); }
@@ -1121,9 +1143,14 @@ const GLOBAL_STYLES = `
           .contact-grid { grid-template-columns: 1fr 1fr; gap: 48px; }
         }
         @media (max-width: 768px) {
+          .process-column-left, .process-column-right {
+            padding-right: 0 !important; padding-left: 0 !important; gap: 40px !important; margin-top: 10vh !important; align-items: center !important; text-align: center !important;
+          }
+          .process-item-small-left, .process-item-small-right {
+            margin-right: 0 !important; margin-left: 0 !important;
+            flex-direction: column !important;
+          }
           .global-nav-wrapper { padding: 14px 16px; flex-wrap: wrap; gap: 12px; }
-          .nav-links { gap: 2px; padding: 4px; flex-wrap: wrap; justify-content: center; border-radius: 32px; width: 100%; }
-          .nav-link { padding: 8px 14px; font-size: 12px; }
           .hero-content { padding: 80px 20px 48px 20px; }
           .hero-tagline { font-size: clamp(28px, 8vw, 48px); }
           .hero-bottom-row { flex-direction: column; align-items: flex-start; gap: 20px; }
@@ -1177,8 +1204,8 @@ const GLOBAL_STYLES = `
           .contact-footer-bar { flex-direction: column; gap: 12px; text-align: center; }
         }
         @media (max-width: 480px) {
-          .nav-link { padding: 6px 10px; font-size: 11px; }
-          .services-grid { grid-template-columns: repeat(3, 1fr); }
+          .services-grid { grid-template-columns: 1fr; }
+          .app-grid { grid-template-columns: 1fr; }
           .industries-grid { grid-template-columns: 1fr; }
           .mission-right { height: 280px; }
         }
@@ -1856,11 +1883,10 @@ export default function HomePage() {
             >
               <div
                 ref={processLeftRef}
-                className="process-column"
-                style={{ flex: 1, display: "flex", flexDirection: "column", gap: "200px", marginTop: "20vh", alignItems: "flex-end", textAlign: "right", transformOrigin: "top center", paddingRight: "12vw" }}
+                className="process-column process-column-left"
               >
                 {processLeft.map((p, i) => (
-                  <div key={i} className="process-item-small" style={{ flexDirection: "row-reverse", marginRight: `${(2 - i) * 120}px` }}>
+                  <div key={i} className="process-item-small process-item-small-left" style={{ marginRight: `${(2 - i) * 120}px` }}>
                     <div className="process-icon-small">{p.icon}</div>
                     <div className="process-name-small">{p.name}</div>
                   </div>
@@ -1868,11 +1894,10 @@ export default function HomePage() {
               </div>
               <div
                 ref={processRightRef}
-                className="process-column"
-                style={{ flex: 1, display: "flex", flexDirection: "column", gap: "200px", marginTop: "20vh", alignItems: "flex-start", textAlign: "left", transformOrigin: "top center", paddingLeft: "12vw" }}
+                className="process-column process-column-right"
               >
                 {processRight.map((p, i) => (
-                  <div key={i} className="process-item-small" style={{ marginLeft: `${(2 - i) * 120}px` }}>
+                  <div key={i} className="process-item-small process-item-small-right" style={{ marginLeft: `${(2 - i) * 120}px` }}>
                     <div className="process-icon-small">{p.icon}</div>
                     <div className="process-name-small">{p.name}</div>
                   </div>
@@ -1895,7 +1920,7 @@ export default function HomePage() {
                 zIndex: 5,
               }}
             >
-              <div className="landing-materials-text" style={{ position: "absolute", top: "15%", left: "5%", width: "35%", maxWidth: "450px" }}>
+              <div className="landing-materials-text">
                 <div className="landing-product-badge">PREMIUM MATERIAL</div>
                 <h1 className="landing-product-title">
                   COLORBOND<span>®</span> XMA STEEL
@@ -1908,7 +1933,7 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="landing-materials-layers" style={{ position: "absolute", top: "15%", left: "40%", transform: "translateX(-50%)", width: "30%", minWidth: "300px" }}>
+              <div className="landing-materials-layers">
                 <div className="landing-layers-list">
                   {coatingLayers.map((layer, idx) => (
                     <div key={idx} className="landing-layer-item">
