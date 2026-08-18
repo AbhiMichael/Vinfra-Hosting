@@ -229,8 +229,8 @@ const GLOBAL_STYLES = `
           display: flex; flex-direction: column; justify-content: center;
           position: relative; z-index: 5;
         }
-        .evolution-header { text-align: center; max-width: 800px; margin: 0 auto 80px auto; }
-        .evolution-title { font-family: var(--font-display); font-size: clamp(40px, 6vw, 84px); font-weight: 400; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 24px; }
+        .evolution-header { text-align: center; max-width: 1000px; margin: 0 auto 80px auto; }
+        .evolution-title { font-family: var(--font-display); font-size: clamp(50px, 7vw, 96px); font-weight: 800; text-transform: uppercase; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 24px; max-width: 900px; margin-inline: auto; }
         
         .evolution-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap: 1px; background: rgba(15,20,24,0.11); border-top: 1px solid rgba(15,20,24,0.15); border-bottom: 1px solid rgba(15,20,24,0.15); margin-top: 40px; }
         .evo-card { background: var(--steel-bg); padding: 40px 24px; display: flex; flex-direction: column; justify-content: space-between; min-height: 380px; height: 380px; position: relative; }
@@ -1143,6 +1143,8 @@ const GLOBAL_STYLES = `
           .contact-grid { grid-template-columns: 1fr 1fr; gap: 48px; }
         }
         @media (max-width: 768px) {
+          .scroll-container { height: calc(5850px + 100vh) !important; }
+          .process-overlay { display: none !important; }
           .process-column-left, .process-column-right {
             padding-right: 0 !important; padding-left: 0 !important; gap: 40px !important; margin-top: 10vh !important; align-items: center !important; text-align: center !important;
           }
@@ -1150,6 +1152,18 @@ const GLOBAL_STYLES = `
             margin-right: 0 !important; margin-left: 0 !important;
             flex-direction: column !important;
           }
+          .material-overlay { justify-content: flex-start !important; padding-top: 12vh !important; align-items: flex-start !important; padding-left: 5vw !important; padding-right: 5vw !important; text-align: left !important; }
+          .landing-materials-text, .landing-materials-layers { padding: 0 !important; align-items: flex-start !important; text-align: left !important; width: 100% !important; }
+          .landing-materials-layers { margin-top: 5px !important; }
+          .landing-product-badge { font-size: 9px !important; margin-bottom: 6px !important; text-align: left !important; }
+          .landing-product-title { font-size: 22px !important; margin-bottom: 10px !important; line-height: 1.2 !important; text-align: left !important; }
+          .landing-product-description { font-size: 11px !important; line-height: 1.4 !important; margin-bottom: 10px !important; text-align: left !important; }
+          .landing-layers-list { gap: 6px !important; align-items: flex-start !important; width: 100% !important; }
+          .landing-layer-item { padding: 6px 10px !important; font-size: 10px !important; border-radius: 4px !important; text-align: left !important; }
+          .landing-hero-title { font-size: 24px !important; line-height: 1.2; margin-bottom: 16px; }
+          .landing-hero-description { font-size: 12px !important; line-height: 1.4; margin-bottom: 24px; }
+          .pan-india-desc-container { bottom: 5% !important; right: 5% !important; max-width: 60vw; }
+          .pan-india-desc { font-size: 11px !important; line-height: 1.4 !important; text-align: right; }
           .global-nav-wrapper { padding: 14px 16px; flex-wrap: wrap; gap: 12px; }
           .hero-content { padding: 80px 20px 48px 20px; }
           .hero-tagline { font-size: clamp(28px, 8vw, 48px); }
@@ -1158,14 +1172,21 @@ const GLOBAL_STYLES = `
           .premium-stat-box { width: auto; flex: none; min-width: unset; padding: 6px 10px; }
           .premium-stat-number { font-size: 16px !important; }
           .premium-stat-label { font-size: 10px !important; }
-          .landing-stats-container { grid-template-columns: 1fr 1fr; }
-          .landing-stat-card { padding: 24px 16px; }
-          .landing-stat-number { font-size: 32px !important; }
-          .landing-stat-label { font-size: 11px; }
-          .page-evolution { padding: 60px 20px; }
-          .evolution-grid { grid-template-columns: 1fr; }
-          .evo-card { min-height: auto; padding: 32px 20px; }
-          .evo-card.image-box { height: 240px; }
+          .landing-stats-container { grid-template-columns: 1fr 1fr; gap: 12px; }
+          .landing-stat-card { padding: 12px 10px; border-radius: 8px; }
+          .landing-stat-number { font-size: 22px !important; margin-bottom: 4px; }
+          .landing-stat-label { font-size: 9px; letter-spacing: 0.02em; }
+          .page-evolution { padding: 30px 16px; }
+          .evolution-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+          .evo-flip-container { height: 180px !important; min-height: 180px !important; }
+          .evo-flip-container:hover .evo-flip-inner { transform: none !important; }
+          body.mobile-scroll-stopped .evo-flip-container .evo-flip-inner { transform: rotateY(180deg) !important; }
+          .evo-card { min-height: 180px !important; height: 180px !important; padding: 12px !important; }
+          .evo-card.image-box { height: 180px !important; }
+          .evolution-title { font-size: 20px !important; margin-bottom: 16px !important; }
+          .evo-card h3 { font-size: 11px !important; margin-bottom: 4px !important; }
+          .evo-card p { font-size: 8px !important; line-height: 1.3 !important; }
+          .evo-icon { width: 18px !important; height: 18px !important; bottom: 8px !important; right: 8px !important; }
           .page-stories { display: flex; flex-direction: column; }
           .story-hero-pane { padding: 60px 20px; }
           .story-split-pane { display: flex; flex-direction: column; }
@@ -1414,6 +1435,11 @@ export default function HomePage() {
   const processLeftRef = useRef(null);
   const processRightRef = useRef(null);
   const materialUIRef = useRef(null);
+  const mobileCoverRef = useRef(null);
+  const mobileTimeoutRef = useRef(null);
+  const mobileAutoScrollTriggered = useRef(false);
+  const lastScrollYRef = useRef(0);
+  const scrollStopTimerRef = useRef(null);
 
   // Frame configuration
   const SETS = [
@@ -1560,13 +1586,36 @@ export default function HomePage() {
         const scrollContainer = scrollContainerRef.current;
         if (!scrollContainer) return;
 
+        const currentScrollY = window.scrollY;
+        lastScrollYRef.current = currentScrollY;
+
+        // While scrolling, remove the stopped class to show images
+        document.body.classList.remove('mobile-scroll-stopped');
+
+        if (scrollStopTimerRef.current) clearTimeout(scrollStopTimerRef.current);
+        scrollStopTimerRef.current = setTimeout(() => {
+          // When scrolling stops, add the class to show text
+          document.body.classList.add('mobile-scroll-stopped');
+        }, 200);
+
         const containerTop = scrollContainer.offsetTop;
         const scrolled = Math.max(0, window.scrollY - containerTop);
         const rawFrame = Math.floor(scrolled / SCROLL_PER_FRAME);
-        const frameIndex = Math.min(rawFrame, TOTAL_FRAMES - 1);
+        
+        const isMobile = window.innerWidth <= 768;
+        const maxFrame = isMobile ? 970 : TOTAL_FRAMES - 1;
+        const frameIndex = Math.min(rawFrame, maxFrame);
 
         currentFrameRef.current = frameIndex;
         drawFrame(frameIndex);
+
+        if (isMobile && rawFrame >= 970) {
+          if (canvasRef.current) canvasRef.current.style.filter = "blur(10px)";
+          if (mobileCoverRef.current) mobileCoverRef.current.style.opacity = "1";
+        } else {
+          if (canvasRef.current) canvasRef.current.style.filter = "none";
+          if (mobileCoverRef.current) mobileCoverRef.current.style.opacity = "0";
+        }
 
         // Show/hide final image overlay at last frame
         if (finalImgRef.current) {
@@ -1651,6 +1700,7 @@ export default function HomePage() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", resize);
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      if (scrollStopTimerRef.current) clearTimeout(scrollStopTimerRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [framesReady, drawFrame]);
@@ -1669,6 +1719,23 @@ export default function HomePage() {
           <canvas
             ref={canvasRef}
             className="hero-sequence-canvas"
+            style={{ transition: "filter 1s ease" }}
+          />
+          <img
+            ref={mobileCoverRef}
+            src="/cover_m.png"
+            alt="Mobile Cover"
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              opacity: 0,
+              transition: "opacity 1s ease",
+              pointerEvents: "none",
+              zIndex: 2
+            }}
           />
           {/* Final image revealed at last frame */}
           <img
@@ -1853,7 +1920,7 @@ export default function HomePage() {
                   Growth Story
                 </h1>
               </div>
-              <div style={{ position: "absolute", bottom: "10%", right: "5%", textAlign: "right" }}>
+              <div className="pan-india-desc-container" style={{ position: "absolute", bottom: "10%", right: "5%", textAlign: "right" }}>
                 <p className="pan-india-desc">
                   Delivering trusted structural and engineering solutions across India,<br />
                   backed by rapid growth, nationwide delivery, and a relentless focus<br />
