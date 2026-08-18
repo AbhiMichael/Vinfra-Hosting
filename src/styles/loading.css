@@ -25,10 +25,16 @@
   align-items: center;
   justify-content: center;
   gap: 25px;
-  /* Scale everything down to make it a little smaller */
-  transform: scale(0.8);
+  /* Scale everything down to make it smaller */
+  transform: scale(0.6);
   /* Add a subtle cinematic shadow around the content */
   filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.15));
+}
+
+@media (max-width: 768px) {
+  .loading-content {
+    transform: scale(0.45);
+  }
 }
 
 .logo-loading-wrapper {
@@ -60,7 +66,7 @@
 
 .fill-logo {
   /* Smooth transition for the clip-path fill effect */
-  transition: clip-path 0.05s linear;
+  transition: clip-path 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .loading-text-wrapper {
@@ -85,5 +91,5 @@
   fill: #000000;
   /* Cinematic shadow to text */
   filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
-  transition: clip-path 0.05s linear;
+  transition: clip-path 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
