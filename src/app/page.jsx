@@ -1764,7 +1764,7 @@ export default function HomePage() {
           />
           <img
             ref={mobileCoverRef}
-            src="/cover_m.png"
+            src="/cover_m.webp"
             alt="Mobile Cover"
             style={{
               position: "absolute",
