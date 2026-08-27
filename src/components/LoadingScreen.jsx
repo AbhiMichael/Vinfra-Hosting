@@ -83,42 +83,6 @@ export default function LoadingScreen() {
   return (
     <div className={`loading-container ${isFadingOut ? 'fade-out' : ''}`}>
       <div className="loading-content">
-        <div className="loading-text-wrapper">
-          <svg width="250" height="60" viewBox="0 0 250 60">
-            <defs>
-              <path id="textCurve" d="M 25 50 Q 125 0 225 50" fill="transparent" />
-            </defs>
-            {/* Base faded text */}
-            <text className="loading-text-arch base-text-arch">
-              <textPath href="#textCurve" startOffset="50%" textAnchor="middle">
-                LOADING
-              </textPath>
-            </text>
-            {/* Filled red text, clipped by progress */}
-            <text
-              className="loading-text-arch fill-text-arch"
-              style={{ clipPath: `inset(0 ${100 - progress}% 0 0)` }}
-            >
-              <textPath href="#textCurve" startOffset="50%" textAnchor="middle">
-                LOADING
-              </textPath>
-            </text>
-          </svg>
-
-          {/* Progress percentage display */}
-          <div style={{
-            marginTop: '12px',
-            fontFamily: 'var(--font-body, Inter, sans-serif)',
-            fontSize: '11px',
-            fontWeight: '500',
-            letterSpacing: '0.15em',
-            color: 'rgba(233,238,242,0.4)',
-            textAlign: 'center',
-            textTransform: 'uppercase',
-          }}>
-            {progress}%
-          </div>
-        </div>
 
         <div className="logo-loading-wrapper">
           {/* Invisible spacer */}

@@ -752,15 +752,8 @@ export default function Projects() {
 
         /* Responsive */
         @media (max-width: 1024px) {
-          .projects-hero,
-          .projects-filter,
-          .projects-grid-section,
-          .projects-stats,
-          .projects-cta-section {
-            padding: 50px 32px;
-          }
           .projects-grid {
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
           }
           
           .stats-grid {
@@ -769,13 +762,8 @@ export default function Projects() {
           
           .modal-content {
             grid-template-columns: 1fr;
-            max-height: 85vh;
+            max-height: 80vh;
             overflow-y: auto;
-          }
-
-          .modal-image {
-            height: 280px;
-            flex-shrink: 0;
           }
         }
 
@@ -785,16 +773,15 @@ export default function Projects() {
           .projects-grid-section,
           .projects-stats,
           .projects-cta-section {
-            padding: 40px 20px;
+            padding: 40px 24px;
           }
           
           .projects-title {
-            font-size: clamp(32px, 8vw, 48px);
+            font-size: 36px;
           }
           
           .stats-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
+            grid-template-columns: 1fr;
           }
           
           .projects-grid {
@@ -803,7 +790,7 @@ export default function Projects() {
           }
           
           .project-image-wrapper {
-            height: 180px;
+            height: 160px;
           }
           
           .project-info {
@@ -811,7 +798,7 @@ export default function Projects() {
           }
           
           .project-title {
-            font-size: 16px;
+            font-size: 14px;
             margin-bottom: 8px;
             white-space: normal;
             line-height: 1.3;
@@ -821,97 +808,21 @@ export default function Projects() {
             top: 10px;
             right: 10px;
             padding: 4px 10px;
-            font-size: 10px;
+            font-size: 9px;
           }
           
           .project-meta {
-            font-size: 11px;
+            font-size: 10px;
             gap: 8px;
             flex-wrap: wrap;
           }
-
-          .project-modal {
-            padding: 16px;
-            align-items: flex-end;
-          }
-
-          .modal-content {
-            max-height: 92vh;
-            border-radius: 16px 16px 0 0;
-          }
-
-          .modal-image {
-            height: 220px;
+          
+          .project-meta span {
+            font-size: 9px;
           }
           
           .modal-info {
-            padding: 24px;
-          }
-
-          .modal-title {
-            font-size: 24px;
-          }
-
-          .cta-content h2 {
-            font-size: 32px;
-          }
-
-          .cta-content p {
-            font-size: 15px;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .projects-hero,
-          .projects-filter,
-          .projects-grid-section,
-          .projects-stats,
-          .projects-cta-section {
-            padding: 36px 16px;
-          }
-
-          .projects-grid {
-            grid-template-columns: 1fr;
-            gap: 16px;
-          }
-
-          .project-image-wrapper {
-            height: 220px;
-          }
-
-          .stats-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-          }
-
-          .stat-item {
-            padding: 20px 12px;
-          }
-
-          .stat-number {
-            font-size: 32px;
-          }
-
-          .filter-btn {
-            padding: 8px 16px;
-            font-size: 13px;
-          }
-
-          .modal-content {
-            max-height: 95vh;
-            border-radius: 12px 12px 0 0;
-          }
-
-          .modal-image {
-            height: 180px;
-          }
-
-          .modal-info {
-            padding: 20px 16px;
-          }
-
-          .cta-content h2 {
-            font-size: 26px;
+            padding: 32px;
           }
         }
 

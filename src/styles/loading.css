@@ -68,28 +68,3 @@
   /* Smooth transition for the clip-path fill effect */
   transition: clip-path 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
-
-.loading-text-wrapper {
-  margin-bottom: -15px; /* Pull text closer to the logo arch */
-  display: flex;
-  justify-content: center;
-}
-
-.loading-text-arch {
-  font-size: 26px;
-  font-weight: 800;
-  font-family: var(--font-display), 'Space Grotesk', sans-serif;
-  letter-spacing: 12px; /* Spread letters along the curve */
-}
-
-.base-text-arch {
-  fill: #a0a0a0;
-  opacity: 0.2;
-}
-
-.fill-text-arch {
-  fill: #000000;
-  /* Cinematic shadow to text */
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
-  transition: clip-path 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}

@@ -824,63 +824,13 @@ export default function Services() {
         /* Responsive */
         @media (max-width: 1024px) {
           .benefits-grid,
+          .services-detail-grid,
           .stats-grid {
             grid-template-columns: repeat(2, 1fr);
           }
-          .services-detail-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
           .process-grid { grid-template-columns: 1fr; }
-          .services-hero,
-          .services-tabs,
-          .overview-section,
-          .benefits-section,
-          .process-section,
-          .services-detail-section,
-          .stats-section {
-            padding: 60px 32px;
-          }
         }
         @media (max-width: 768px) {
-          .services-hero,
-          .services-tabs,
-          .overview-section,
-          .benefits-section,
-          .process-section,
-          .services-detail-section,
-          .stats-section {
-            padding: 48px 20px;
-          }
-          .benefits-grid,
-          .services-detail-grid,
-          .stats-grid,
-          .process-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-          }
-          .benefit-card, .process-card, .service-detail-card, .stat-card {
-            padding: 24px 16px;
-          }
-          .benefit-icon svg, .process-icon svg, .service-detail-icon svg {
-            width: 36px;
-            height: 36px;
-            margin-bottom: 12px;
-          }
-          .benefit-name, .process-name, .service-detail-card .service-detail-name {
-            font-size: 16px;
-            margin-bottom: 8px;
-          }
-          .benefit-desc, .process-description, .service-detail-card .service-detail-description {
-            font-size: 12px;
-            line-height: 1.5;
-          }
-          .stat-number { font-size: 36px; margin-bottom: 4px; }
-          .stat-label { font-size: 11px; }
-          .certified-card { padding: 24px; }
-          .section-title { font-size: 28px; }
-          .services-title { font-size: clamp(36px, 8vw, 60px); }
-        }
-        @media (max-width: 480px) {
           .services-hero,
           .services-tabs,
           .overview-section,
@@ -892,20 +842,32 @@ export default function Services() {
           }
           .benefits-grid,
           .services-detail-grid,
-          .stats-grid {
-            grid-template-columns: 1fr;
-            gap: 12px;
-          }
+          .stats-grid,
           .process-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, 1fr);
             gap: 12px;
           }
           .benefit-card, .process-card, .service-detail-card, .stat-card {
-            padding: 20px 14px;
+            padding: 16px 12px;
           }
-          .services-title { font-size: clamp(32px, 8vw, 52px); }
-          .section-title { font-size: 24px; }
-          .tab-btn { padding: 10px 18px; font-size: 13px; }
+          .benefit-icon svg, .process-icon svg, .service-detail-icon svg {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 12px;
+          }
+          .benefit-name, .process-name, .service-detail-card .service-detail-name {
+            font-size: 14px;
+            margin-bottom: 8px;
+            line-height: 1.3;
+          }
+          .benefit-description, .process-description, .service-detail-card .service-detail-description {
+            font-size: 11px;
+            line-height: 1.4;
+          }
+          .stat-number { font-size: 28px; margin-bottom: 4px; }
+          .stat-label { font-size: 10px; }
+          .certified-card { padding: 24px; }
+          .section-title { font-size: 28px; }
         }
       `}</style>
 

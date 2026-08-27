@@ -318,8 +318,8 @@ const GLOBAL_STYLES = `
         .report-meta { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(15,20,24,0.5); }
         .report-title { font-family: var(--font-display); font-size: 32px; font-weight: 500; line-height: 1.2; margin: 24px 0; max-width: 500px; }
         .report-date { font-size: 14px; color: rgba(15,20,24,0.5); }
-        .story-image-block { overflow: hidden; position: relative; background: #0f1418; }
-        .story-image-block img { width: 100%; height: 100%; object-fit: contain; }
+        .story-image-block { overflow: hidden; position: relative; background: #001322; display: flex; align-items: center; justify-content: center; }
+        .story-image-block img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
 
         .page-applications { background: var(--dark); padding: 140px 48px; min-height: 100vh; position: relative; }
         .app-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--panel-border); padding-bottom: 40px; margin-bottom: 60px; position: relative; z-index: 5; }
@@ -1642,7 +1642,7 @@ export default function HomePage() {
         const containerTop = scrollContainer.offsetTop;
         const scrolled = Math.max(0, window.scrollY - containerTop);
         const rawFrame = Math.floor(scrolled / SCROLL_PER_FRAME);
-        
+
         const isMobile = window.innerWidth <= 768;
         const maxFrame = isMobile ? 970 : TOTAL_FRAMES - 1;
         const frameIndex = Math.min(rawFrame, maxFrame);
