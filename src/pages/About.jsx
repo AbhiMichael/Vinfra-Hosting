@@ -871,9 +871,18 @@ export default function About() {
 
         @media (max-width: 1024px) {
           .about-hero, .mission-grid { grid-template-columns: 1fr; gap: 40px; }
-          .expertise-grid { grid-template-columns: repeat(2, 1fr); }
+          .about-hero { padding: 40px 32px 80px 32px; }
+          .about-mission { padding: 60px 32px; }
+          .about-stats { padding: 60px 32px; }
+          .about-news { padding: 60px 32px; }
+          .about-commitment { padding: 60px 32px; }
+          .about-expertise { padding: 60px 32px; }
+          .about-services-detail { padding: 60px 32px; }
+          .about-news-tiles { padding: 60px 32px; }
+          .expertise-grid { grid-template-columns: repeat(4, 1fr); }
           .stats-container { grid-template-columns: repeat(2, 1fr); }
           .news-grid { grid-template-columns: 1fr; }
+          .mission-grid-images { height: 400px; }
           .tiles-grid { grid-template-columns: repeat(2, 1fr); }
           .tile-large, .tile-medium, .tile-medium-alt, .tile-wide { grid-column: span 1; }
         }
@@ -881,19 +890,40 @@ export default function About() {
           .about-hero, .about-mission, .about-stats, .about-news,
           .about-commitment, .about-expertise, .about-services-detail,
           .about-news-tiles {
-            padding: 60px 24px;
+            padding: 60px 20px;
+          }
+          .about-hero {
+            padding: 40px 20px 60px 20px;
           }
           .expertise-grid { grid-template-columns: repeat(4, 1fr); gap: 1px; }
-          .expertise-card { padding: 12px 4px; }
-          .expertise-icon { width: 26px; height: 26px; margin-bottom: 8px; }
-          .expertise-card h4 { font-size: 9px; line-height: 1.2; word-wrap: break-word; hyphens: auto; }
+          .expertise-card { padding: 16px 6px; }
+          .expertise-icon { width: 28px; height: 28px; margin-bottom: 8px; }
+          .expertise-card h4 { font-size: 10px; line-height: 1.2; word-wrap: break-word; hyphens: auto; }
           .services-detail-grid { grid-template-columns: 1fr; }
           .about-hero-buttons { flex-direction: column; align-items: flex-start; }
-          .mission-grid-images { height: 240px; }
-          .about-hero-image img { max-height: 220px; }
-          .image-card { height: 200px; }
+          .mission-grid-images { height: 280px; }
+          .about-hero-image { width: 100%; }
+          .about-hero-image img { max-height: 300px; width: 100%; object-fit: cover; }
+          .image-card { height: 220px; }
           .tiles-grid { grid-template-columns: 1fr; }
           .tile-large .tile-title { font-size: 24px; }
+          .news-card { padding: 40px 24px; }
+        }
+        @media (max-width: 480px) {
+          .about-hero, .about-mission, .about-stats, .about-news,
+          .about-commitment, .about-expertise, .about-services-detail,
+          .about-news-tiles {
+            padding: 48px 16px;
+          }
+          .expertise-grid { grid-template-columns: repeat(2, 1fr); }
+          .expertise-card { padding: 20px 12px; }
+          .expertise-icon { width: 36px; height: 36px; }
+          .expertise-card h4 { font-size: 12px; }
+          .stats-container { grid-template-columns: 1fr 1fr; }
+          .stat-card { padding: 32px 16px; }
+          .stat-number { font-size: 36px !important; }
+          .mission-grid-images { height: 220px; }
+          .about-hero-image img { max-height: 220px; }
         }
       `}</style>
 

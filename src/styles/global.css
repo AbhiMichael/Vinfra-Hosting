@@ -1364,6 +1364,7 @@ canvas.hero-sequence-canvas {
   .page-mission {
     padding: 100px 32px;
     gap: 48px;
+    grid-template-columns: 1fr 1fr;
   }
 
   .page-benefits {
@@ -1402,6 +1403,11 @@ canvas.hero-sequence-canvas {
   .contact-grid {
     grid-template-columns: 1fr 1fr;
     gap: 48px;
+  }
+
+  /* App grid: 3-col pages */
+  .app-grid.three-col {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -1512,16 +1518,20 @@ canvas.hero-sequence-canvas {
   }
 
   .evolution-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   .evo-card {
-    min-height: auto;
-    padding: 32px 20px;
+    min-height: 280px;
+    padding: 24px 16px;
   }
 
   .evo-card.image-box {
     height: 240px;
+  }
+
+  .evo-card h3 {
+    font-size: 20px;
   }
 
   /* Stories */
@@ -1540,8 +1550,17 @@ canvas.hero-sequence-canvas {
     letter-spacing: 0.02em;
   }
 
+  .story-hero-pane p {
+    font-size: 15px;
+    margin-top: 24px;
+  }
+
   .report-block {
     padding: 40px 20px;
+  }
+
+  .report-title {
+    font-size: 22px;
   }
 
   .story-image-block {
@@ -1564,7 +1583,7 @@ canvas.hero-sequence-canvas {
   }
 
   .app-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .app-img-wrapper {
@@ -1627,8 +1646,8 @@ canvas.hero-sequence-canvas {
   }
 
   .industry-cell {
-    padding: 24px 16px;
-    font-size: 15px;
+    padding: 20px 14px;
+    font-size: 14px;
   }
 
   /* Metrics */
@@ -1641,6 +1660,10 @@ canvas.hero-sequence-canvas {
     padding: 24px 12px;
     border-right: none;
     border-bottom: 1px solid var(--panel-border);
+  }
+
+  .metric-block:nth-child(odd) {
+    border-right: 1px solid var(--panel-border);
   }
 
   /* Contact */
@@ -1659,13 +1682,39 @@ canvas.hero-sequence-canvas {
     gap: 12px;
     text-align: center;
   }
+
+  /* Services section header */
+  .services-header {
+    margin-bottom: 48px;
+  }
 }
 
 /* Small mobile (≤ 480px) */
 @media (max-width: 480px) {
-  .nav-link {
-    padding: 6px 10px;
-    font-size: 11px;
+  .hero-content {
+    padding: 70px 16px 40px 16px;
+  }
+
+  .hero-eyebrow {
+    font-size: 12px;
+    max-width: 180px;
+  }
+
+  .evolution-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .evo-card {
+    min-height: auto;
+    padding: 24px 16px;
+  }
+
+  .evo-card.image-box {
+    height: 200px;
+  }
+
+  .app-grid {
+    grid-template-columns: 1fr;
   }
 
   .services-grid {
@@ -1677,7 +1726,7 @@ canvas.hero-sequence-canvas {
   }
 
   .metrics-strip {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .mission-right {
@@ -1687,6 +1736,15 @@ canvas.hero-sequence-canvas {
   .story-split-pane {
     display: flex;
     flex-direction: column;
+  }
+
+  .page-contact {
+    padding: 48px 16px 32px 16px;
+  }
+
+  .contact-grid {
+    gap: 28px;
+    margin-bottom: 28px;
   }
 }
 

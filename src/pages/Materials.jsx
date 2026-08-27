@@ -158,7 +158,7 @@ export default function Materials() {
         }
         @media (max-width: 768px) {
           .materials-container {
-            padding: 24px 16px;
+            padding: 24px 20px;
             gap: 32px;
           }
           .materials-content {
@@ -167,6 +167,18 @@ export default function Materials() {
           .product-title {
             font-size: 28px;
           }
+          .materials-cta {
+            padding: 60px 20px !important;
+          }
+          .materials-cta h2 {
+            font-size: 32px !important;
+          }
+          .materials-cta p {
+            font-size: 15px !important;
+          }
+          .materials-footer {
+            padding: 40px 20px 32px !important;
+          }
         }
         @media (max-width: 480px) {
           .materials-content {
@@ -174,6 +186,15 @@ export default function Materials() {
           }
           .product-title {
             font-size: 24px;
+          }
+          .materials-cta {
+            padding: 48px 16px !important;
+          }
+          .materials-cta h2 {
+            font-size: 26px !important;
+          }
+          .materials-footer {
+            padding: 32px 16px 24px !important;
           }
         }
 

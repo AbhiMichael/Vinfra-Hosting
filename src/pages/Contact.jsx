@@ -323,25 +323,35 @@ export default function Contact() {
             padding-top: 32px;
           }
           .contact-title {
-            font-size: 28px;
+            font-size: 26px;
+          }
+          .contact-card-image {
+            height: 260px;
           }
         }
         @media (max-width: 768px) {
-          .contact-container { padding: 20px 12px; }
-          .contact-card-content { padding: 16px; gap: 24px; }
-          .contact-title { font-size: 20px; }
-          .image-overlay h2 { font-size: 18px; }
-          .form-title { font-size: 18px; margin-bottom: 16px; }
-          .contact-detail { font-size: 12px; gap: 12px; }
-          .detail-icon { width: 32px; height: 32px; min-width: 32px; }
-          .detail-icon svg { width: 16px; height: 16px; }
-          .form-group input, .form-group textarea { padding: 10px 14px; font-size: 12px; }
-          .submit-btn { padding: 12px 20px; font-size: 13px; }
-          .branch-tag { font-size: 10px; padding: 3px 8px; }
+          .contact-container { padding: 20px 16px; }
+          .contact-card-content { padding: 24px 20px; gap: 28px; }
+          .contact-title { font-size: 22px; }
+          .image-overlay h2 { font-size: 20px; }
+          .image-overlay { padding: 30px 24px 16px; }
+          .form-title { font-size: 20px; margin-bottom: 16px; }
+          .detail-item { gap: 12px; }
+          .detail-icon { font-size: 20px; min-width: 28px; }
+          .detail-content h4 { font-size: 14px; }
+          .detail-content p { font-size: 13px; }
+          .form-group input, .form-group textarea { padding: 12px 14px; font-size: 14px; }
+          .submit-btn { padding: 14px 20px; font-size: 14px; }
+          .branch-tag { font-size: 11px; padding: 4px 10px; }
+          .contact-card-image { height: 220px; }
         }
         @media (max-width: 480px) {
-          .contact-card-content { padding: 12px; gap: 16px; }
-          .contact-container { padding: 12px 8px; }
+          .contact-card-content { padding: 16px; gap: 20px; }
+          .contact-container { padding: 12px; }
+          .contact-card { border-radius: 20px; }
+          .contact-title { font-size: 20px; }
+          .form-group input, .form-group textarea { padding: 10px 12px; font-size: 13px; }
+          .contact-card-image { height: 180px; }
         }
 
         .reveal-group {
